@@ -7,17 +7,17 @@ chapter: false
 
 # Báo cáo thực tập
 ### Thông tin sinh viên:
-&emsp; **Họ và tên:** Nguyễn Văn A
+&emsp; **Họ và tên:** Trần Thị Thanh Loan
 
-&emsp; **Số điện thoại:** 0989888999
+&emsp; **Số điện thoại:** 0364207509 
 
-&emsp; **Email:** Anguyenvan@gmail.com
+&emsp; **Email:** loan16102005tttl@gmail.com
 
-&emsp; **Trường:** Đại học Sư phạm Kỹ thuật TP.HCM
+&emsp; **Trường:** Đại học FPT
 
-&emsp; **Ngành:** Công nghệ thông tin
+&emsp; **Ngành:** Kỹ thuật phần mềm
 
-&emsp; **Lớp:** AWS082025
+&emsp; **Lớp:** SE194662
 
 &emsp; **Công ty thực tập:** Công ty TNHH Amazon Web Services Vietnam
 
