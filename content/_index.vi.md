@@ -17,7 +17,7 @@ chapter: false
 
 &emsp; **Ngành:** Kỹ thuật phần mềm
 
-&emsp; **Lớp:** SE194662
+&emsp; **MSSV** SE194662
 
 &emsp; **Công ty thực tập:** Công ty TNHH Amazon Web Services Vietnam
 
