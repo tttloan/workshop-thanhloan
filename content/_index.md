@@ -13,17 +13,17 @@ chapter: false
 {{% /notice %}}
 
 ### Student Information:
-&emsp; **Full Name:** Nguyen Van A
+&emsp; **Full Name:** Tran Thi Thanh Loan
 
-&emsp; **Phone Number:** 0989888999 
+&emsp; **Phone Number:** 0364207509
 
-&emsp; **Email:** Anguyenvan@gmail.com
+&emsp; **Email:** loan16102005tttl@gmail.com
 
-&emsp; **University:** Ho Chi Minh City University of Technology and Education
+&emsp; **University:** FPT University
 
-&emsp; **Major:** Information Technology
+&emsp; **Major:** Software Engineering
 
-&emsp; **Class:** AWS082025
+&emsp; **ID:** SE194662
 
 &emsp; **Internship Company:** Amazon Web Services Vietnam Co., Ltd.
 
