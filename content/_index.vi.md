@@ -17,7 +17,7 @@ chapter: false
 
 &emsp; **Ngành:** Kỹ thuật phần mềm
 
-&emsp; **MSSV4662
+&emsp; **MSSV:** SE194662
 
 &emsp; **Công ty thực tập:** Bootcamp - First Cloud AI Journey @ AWS Study Group
 
