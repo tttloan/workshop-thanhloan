@@ -1,4 +1,4 @@
-baseURL = "https://se192169report.vercel.app/"
+baseURL = "https://workshop-thanhloan.vercel.app/"
 relativeURLs = false
 canonifyURLs = false
 defaultContentLanguage = "en"
