@@ -27,3 +27,14 @@ During my internship, I participated in two events. Each one was a memorable exp
 &emsp;**Location:** FPTU - Hall Academic A  
 
 &emsp;**Role:** Attendee  
+
+---
+
+### [Event ](4.3-Event3/)  
+&emsp;**Event Name:** Cloud Mastery Series #3: Security
+
+&emsp;**Date & Time:** 09:00 – 12:00, April 11, 2026  
+
+&emsp;**Location:** FPTU - Hall Academic A  
+
+&emsp;**Role:** Attendee  

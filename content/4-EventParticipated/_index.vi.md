@@ -27,3 +27,13 @@ Trong quá trình thực tập, em đã tham gia 2 events, với mỗi event là
 &emsp;**Địa điểm:** FPTU - Hall Academic A
 
 &emsp;**Vai trò trong sự kiện:** Người tham dự 
+
+
+### [Event 3](4.3-Event3/)
+&emsp;**Tên sự kiện:** Cloud Mastery Series #3: Security
+
+&emsp;**Thời gian:** 09:00 – 12:00, ngày 11 tháng 04 năm 2026
+
+&emsp;**Địa điểm:** FPTU - Hall Academic A
+
+&emsp;**Vai trò trong sự kiện:** Người tham dự 

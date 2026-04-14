@@ -23,7 +23,7 @@ chapter: false
 
 &emsp; **Major:** Software Engineering
 
-&emsp; **ID:** SE194662
+&emsp; **StudentID:** SE194662
 
 &emsp; **Internship Company:** Bootcamp - First Cloud AI Journey @ AWS Study Group
 
