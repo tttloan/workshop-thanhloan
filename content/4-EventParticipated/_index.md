@@ -30,7 +30,7 @@ During my internship, I participated in two events. Each one was a memorable exp
 
 ---
 
-### [Event ](4.3-Event3/)  
+### [Event 3](4.3-Event3/)  
 &emsp;**Event Name:** Cloud Mastery Series #3: Security
 
 &emsp;**Date & Time:** 09:00 – 12:00, April 11, 2026  
