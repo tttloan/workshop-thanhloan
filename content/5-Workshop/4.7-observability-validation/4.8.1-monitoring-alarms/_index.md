@@ -1,4 +1,4 @@
----
+<!-- ---
 title : "CloudWatch Logs Monitoring"
 date : 2024-01-01
 weight : 1
@@ -24,4 +24,4 @@ CloudWatch is used to collect and monitor system logs, helping to detect errors 
 
 #### Note
 
-Setting up alarms and SNS will be covered in detail in section 4.7.2.
+Setting up alarms and SNS will be covered in detail in section 4.7.2. -->

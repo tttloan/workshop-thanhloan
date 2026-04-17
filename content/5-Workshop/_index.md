@@ -5,11 +5,19 @@ weight: 4
 chapter: false
 pre: " <b> 4. </b> "
 ---
+<!--
 {{% notice warning %}}
 ⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
 {{% /notice %}}
+-->
 
-# EduTrust Workshop
+<div align="center">
+<h1>
+EduTrust<br/>
+Learning Support and<br/>
+AI Camera Exam Monitoring System
+</h1>
+</div>
 
 #### Overview
 

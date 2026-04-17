@@ -1,4 +1,4 @@
----
+<!-- ---
 title : "Giám sát CloudWatch Logs"
 date : 2024-01-01
 weight : 1
@@ -24,4 +24,4 @@ CloudWatch được sử dụng để thu thập và giám sát log hệ thống
 
 #### Ghi chú
 
-Thiết lập alarm và SNS sẽ được trình bày chi tiết ở mục 4.7.2.
+Thiết lập alarm và SNS sẽ được trình bày chi tiết ở mục 4.7.2. -->

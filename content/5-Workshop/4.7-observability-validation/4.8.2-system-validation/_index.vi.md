@@ -1,4 +1,4 @@
----
+<!-- ---
 title : "Cảnh báo SNS qua Email"
 date : 2024-01-01
 weight : 2
@@ -25,4 +25,4 @@ Thiết lập cảnh báo gửi email khi CloudWatch Alarm vượt ngưỡng, gi
 
 1. Tạo điều kiện giả lập vượt ngưỡng để kích hoạt alarm.
 2. Xác nhận email cảnh báo được gửi thành công.
-3. Kiểm tra nội dung cảnh báo có đủ thông tin truy vết.
+3. Kiểm tra nội dung cảnh báo có đủ thông tin truy vết. -->

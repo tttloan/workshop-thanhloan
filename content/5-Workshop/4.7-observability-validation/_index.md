@@ -1,4 +1,4 @@
----
+<!-- ---
 title : "CloudWatch Monitoring & SNS Alerts"
 date : 2024-01-01
 weight : 7
@@ -13,4 +13,4 @@ This section focuses on monitoring logs/metrics using Amazon CloudWatch and conf
 #### Content
 
 1. [CloudWatch Logs Monitoring](4.8.1-monitoring-alarms/)
-2. [SNS Email Alerts](4.8.2-system-validation/)
+2. [SNS Email Alerts](4.8.2-system-validation/) -->

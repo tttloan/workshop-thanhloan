@@ -1,4 +1,4 @@
----
+<!-- ---
 title : "SNS Email Alerts"
 date : 2024-01-01
 weight : 2
@@ -25,4 +25,4 @@ Set up alerts to send emails when a CloudWatch Alarm exceeds a threshold, helpin
 
 1. Simulate conditions to exceed the threshold and trigger the alarm.
 2. Confirm the alert email is sent successfully.
-3. Check the alert content to ensure it provides enough information for tracing.
+3. Check the alert content to ensure it provides enough information for tracing. -->

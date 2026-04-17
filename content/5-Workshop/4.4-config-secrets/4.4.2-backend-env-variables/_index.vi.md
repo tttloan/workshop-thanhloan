@@ -1,7 +1,7 @@
 ---
 title : "Biến môi trường Backend"
 date : 2024-01-01
-weight : 3
+weight : 2
 chapter : false
 pre : " <b> 4.4.2 </b> "
 ---

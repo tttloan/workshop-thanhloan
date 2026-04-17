@@ -1,4 +1,4 @@
----
+<!-- ---
 title : "Giám sát CloudWatch & Cảnh báo SNS"
 date : 2024-01-01
 weight : 7
@@ -13,4 +13,4 @@ Phần này tập trung vào việc giám sát log/metrics bằng Amazon CloudWa
 #### Nội dung
 
 1. [Giám sát CloudWatch Logs](4.8.1-monitoring-alarms/)
-2. [Cảnh báo SNS qua email](4.8.2-system-validation/)
+2. [Cảnh báo SNS qua email](4.8.2-system-validation/) -->

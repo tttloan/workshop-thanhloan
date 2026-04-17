@@ -3,7 +3,7 @@ title : "Dọn dẹp"
 date : 2024-01-01
 weight : 8
 chapter : false
-pre : " <b> 4.8. </b> "
+pre : " <b> 4.7. </b> "
 ---
 
 #### Dọn dẹp bằng terraform destroy
