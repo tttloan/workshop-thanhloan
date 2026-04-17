@@ -5,9 +5,11 @@ weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-<!-- {{% notice warning %}}
+<!--
+{{% notice warning %}}
 ⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
 {{% /notice %}}
+-->
 
 Tại phần này, bạn cần tóm tắt các nội dung trong workshop mà bạn **dự tính** sẽ làm. -->
 
@@ -34,7 +36,7 @@ Giải pháp giúp giảm tải công việc giám sát thủ công cho giáo vi
 ### 3. Kiến trúc giải pháp  
 Nền tảng áp dụng kiến trúc **Fullstack monorepo** với backend Python (FastAPI) và frontend Next.js, triển khai qua Docker container. Dữ liệu được lưu trữ trên MongoDB (collections: users, exams, classes, submissions, violations), cache session hội thoại trên Redis, và hình ảnh vi phạm trên Amazon S3.  
 
-![Kiến trúc giải pháp EduTrust](/images/2-Proposal/edutrust-architect.png)
+![Kiến trúc giải pháp EduTrust](FCAJ-Final.webp)
 
 *Dịch vụ & công nghệ sử dụng (theo kiến trúc)*  
 - *AWS Amplify + CloudFront*: Hosting frontend Next.js và phân phối nội dung qua CDN.  
@@ -96,22 +98,24 @@ Dự án được chia thành 5 giai đoạn chính:
 - Frontend host trên Amplify + CloudFront, dùng WAF.  
 - Dữ liệu vi phạm lưu trên S3 (~10–20 GB/tháng).  
 
-*Chi phí hạ tầng (hàng tháng – ước tính)*  
-- VPC Endpoints (Interface cho ECR/SSM/STS/Logs…): ~30–60 USD  
-- EC2 Auto Scaling (2 x t3.small): ~30–40 USD  
-- Application Load Balancer: ~16–25 USD  
-- Amazon S3 (ảnh vi phạm, log ALB, terraform state): ~2–6 USD  
-- Amazon CloudFront + Amplify: ~1–5 USD  
-- AWS WAF: ~5–10 USD  
-- Amazon ElastiCache (Redis – cache nhỏ): ~15–25 USD  
-- Amazon DynamoDB (low traffic): ~1–3 USD  
-- Amazon ECR (storage image): ~1–3 USD  
-- Amazon Cognito (<= 50k MAU): ~0–2 USD  
-- Amazon CloudWatch + VPC Flow Logs + SNS: ~5–10 USD  
-- AWS KMS + SSM Parameter Store: ~1–3 USD  
-- Data Transfer: ~2–6 USD  
+*Chi phí hạ tầng (hàng tháng – ước tính)*
 
-*Tổng dự kiến*: ~110–195 USD/tháng (đã tính VPC Endpoints; phụ thuộc lưu lượng và dung lượng S3)  
+| Dịch vụ | TP ($) | Dự báo 1 tháng ($) |
+| :--- | :--- | :--- |
+| VPC | 0.00 | 0.00 |
+| EC2-Other | 1.57 | 47.10 |
+| EC2-Instances | 1.27 | 38.10 |
+| Elastic Load Balancing | 0.61 | 18.30 |
+| Amplify | 0.62 | 18.60 |
+| WAF | 0.53 | 15.90 |
+| ElastiCache | 0 - 1.15 | 9 - 14 |
+| KMS | - | 2.00 |
+| Route 53 | 0.51 | |
+| ECR | - | 0.3 (3GB) |
+| S3 | - | 0.03 (1GB) |
+| DynamoDB | 0.00 | 0.00 |
+| Cognito | 0.00 | 0.00 |
+| SNS | 0.00 | 0.00 |
 
 *Chi phí API bên thứ ba*  
 - OpenAI/LiteLLM API: tuỳ usage.  

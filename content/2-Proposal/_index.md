@@ -1,130 +1,273 @@
----
+cuTrust — AI-Powered Online Exam Monitoring Platform
+## AWS-Integrated Fullstack Solution for Exam Proctoring and Smart Learning Support
+
+### 1. Executive Summary
+EduTrust is an online exam management platform designed for educational environments (schools, training centers) to digitize the exam organization process, proctor exams using AI, and support learning through a smart chatbot. The system serves 3 main user groups: **Admins** (schools), **Teachers** (creating exams, proctoring), and **Students** (taking exams, viewing results). The backend uses FastAPI (Python) combined with MongoDB, Redis, Amazon S3, and the YOLO model for cheating detection via camera. The frontend is built with Next.js and Tailwind CSS, deployed on AWS Amplify.
+
+### 2. Problem Statement
+*Current Problems*
+Organizing online exams in schools faces many challenges: manual proctoring is labor-intensive, cheating is difficult to detect (using phones, multiple people in frame, leaving the camera), there is no centralized system to manage classes — exams — results, and there is a lack of smart learning support tools for students.
+
+*The Solution*
+EduTrust provides a comprehensive platform including:
+- **Class & Exam Management**: Admins create classes, assign homeroom and subject teachers; teachers create multiple-choice exams with secret keys and set start/end times.
+- **AI Proctoring**: Integrates YOLOv26n (object detection) to detect violations via webcam in real-time — including detecting multiple faces (MULTIPLE_FACES), leaving the camera (FACE_DISAPPEARED: cell Phone), and forbidden objects (FORBIDDEN_OBJECT). Violation images are uploaded to Amazon S3 and logged in MongoDB.
+- **AI Learning Assistant Chatbot**: A multi-agent system using Pydantic AI with specialized agents (technical, social, general, web search) helps students look up knowledge, ask questions, and search for documents.
+- **Authentication & Security**: JWT tokens (using Cognito) for Role-Based Access Control (RBAC).
+
+*Benefits and Return on Investment (ROI)*
+The solution helps reduce the manual proctoring workload for teachers, improving transparency and fairness in exams. The system automatically grades, records violations with photographic evidence, and provides a dashboard summarizing results. Operating costs are low due to leveraging MongoDB Atlas (free tier), Redis Cloud, and AWS S3/Amplify. Estimated AWS infrastructure cost is under $5/month for a medium-sized school.
+
+### 3. Solution Architecture
+The platform applies a **Fullstack monorepo** architecture with a Python (FastAPI) backend and a Next.js frontend, deployed via Docker containers. Data is stored on MongoDB (collections: users, exams, classes, submissions, violations), conversation sessions are cached on Redis, and violation images are on Amazon S3.
+
+![EduTrust Solution Architecture](FCAJ-Final.webp)
+
+*Services & Technology Used (by architecture)*
+- *AWS Amplify + CloudFront*: Next.js frontend hosting and content delivery via CDN.
+- *AWS Route 53 + AWS ACM*: DNS and TLS/HTTPS certificate management.
+- *AWS WAF*: Web layer protection against common attack patterns.
+- *Amazon VPC (public/private subnets)*: Network isolation, separating public/private tiers.
+- *Application Load Balancer (ALB)*: Coordinating requests to the backend.
+- *Amazon EC2 Auto Scaling*: Operating the backend according to load with auto-scaling capabilities.
+- *Amazon ECR*: Storing Docker images for the backend.
+- *Amazon S3*: Storing violation images, ALB logs, and Terraform state.
+- *Amazon DynamoDB*: Fast key-value data storage (based on architecture diagram).
+- *Amazon ElastiCache for Redis*: Caching sessions/conversations and fast-access data.
+- *Amazon Cognito*: User authentication, role-based authorization.
+- *Amazon CloudWatch + VPC Flow Logs + SNS*: Monitoring, logging, and alerting.
+- *AWS KMS + SSM Parameter Store + PrivateLink*: Securing secrets and internal access.
+- *Terraform + GitHub Actions*: IaC and CI/CD for automated deployment.
+
+*Applied Technologies*
+- *FastAPI*: Backend API framework — async, auto-generated docs (Swagger/ReDoc).
+- *Next.js 16 + Tailwind CSS v4*: Frontend SPA with App Router, server/client components.
+- *YOLOv26n (Ultralytics)*: Object detection model for exam proctoring.
+- *Pydantic AI + LiteLLM*: Multi-agent orchestrator for the learning support chatbot.
+- *Docker*: Containerizing the backend with multi-stage build (Ubuntu 24.04).
+
+*Component Design*
+- *Authentication (Auth)*: JWT access/refresh tokens, session management via cookies, RBAC authorization (admin/teacher/student).
+- *Class Management*: Assigning homeroom/subject teachers, adding/removing students, automatically updating status (active/inactive).
+- *Exam Management*: Creating multiple-choice exams, automatic secret codes, time control (start/end time), automatic grading upon submission.
+- *Camera Monitoring (Detection)*: CameraService receives frames from clients, ObjectDetector (YOLO) detects violations, ViolationLogger logs to MongoDB + S3, ScreenshotUtils captures evidence photos.
+- *AI Agent*: UnifiedAgent orchestrates sub-agents (technical, social, general, web_search) via tool delegation, streaming responses via WebSocket.
+
+### 4. Technical Implementation
+*Implementation Phases*
+The project is divided into 5 main phases:
+1. *Learning foundational AWS services*: Familiarizing with services in the architecture (VPC, EC2/ALB/ASG, S3, ECR, Cognito, CloudWatch, KMS, SSM, WAF) and the CI/CD/IaC process.
+2. *Research and architecture design*: Researching technologies (FastAPI, Next.js, YOLO, Pydantic AI), designing database schema, API contracts, and system architecture.
+3. *Developing core features*: Building the auth system (Cognito JWT), class CRUD, exam management, automatic grading.
+4. *Integrating AI & Camera*: Integrating YOLO for violation detection, building the multi-agent chatbot system, connecting S3/Redis.
+5. *Frontend & testing*: Completing the Next.js dashboard for the 3 roles, end-to-end testing, and Dockerization.
+
+*Technical Requirements*
+- *Backend*: Python ≥ 3.11, FastAPI, Motor (async MongoDB driver), Redis ≥ 5.0, Boto3 (AWS SDK), Ultralytics (YOLO), Pydantic AI + LiteLLM, Kreuzberg (document parsing), SlowAPI (rate limiting).
+- *Frontend*: Next.js 16, React 19, Tailwind CSS v4, Lucide React (icons), React Markdown + KaTeX (math rendering), ONNX Runtime Web, next-intl (i18n).
+- *Infrastructure*: Docker (multi-stage build), MongoDB Atlas, Redis Cloud, Amazon S3, AWS Amplify, Logfire (observability).
+
+### 5. Timeline & Milestones
+- *Weeks 1–2*: Learning AWS services based on the architecture (VPC, EC2/ALB/ASG, S3, ECR, Cognito, CloudWatch, KMS/SSM, WAF) and the CI/CD/IaC process.
+- *Weeks 3–4*: Researching technologies, designing architecture and database schema.
+- *Weeks 5–6*: Developing backend core (auth, classes, exams, submissions).
+- *Weeks 7–8*: Integrating YOLO detection, AI chatbot (multi-agent), S3 storage.
+- *Week 9*: Developing frontend dashboard (admin/teacher/student views).
+- *Week 10*: Integration testing, performance optimization, and Dockerization.
+
+### 6. Budget Estimation
+
+*Architectural Assumptions*
+- Small environment (staging/small production), low–medium traffic.
+- Backend running on EC2 Auto Scaling (t3.small, 2 instances), ALB operating 24/7.
+- Frontend hosted on Amplify + CloudFront, using WAF.
+- Violation data stored on S3 (~10–20 GB/month).
+
+*Infrastructure Costs (monthly – estimated)*
+
+| Service | TP ($) | Forcasting 1 month ($) |
+| :--- | :--- | :--- |
+| VPC | 0.00 | 0.00 |
+| EC2-Other | 1.57 | 47.10 |
+| EC2-Instances | 1.27 | 38.10 |
+| Elastic Load Balancing | 0.61 | 18.30 |
+| Amplify | 0.62 | 18.60 |
+| WAF | 0.53 | 15.90 |
+| ElastiCache | 0 - 1.15 | 9 - 14 |
+| KMS | - | 2.00 |
+| Route 53 | 0.51 | |
+| ECR | - | 0.3 (3GB) |
+| S3 | - | 0.03 (1GB) |
+| DynamoDB | 0.00 | 0.00 |
+| Cognito | 0.00 | 0.00 |
+| SNS | 0.00 | 0.00 |
+
+*Third-party API Costs*
+- OpenAI/LiteLLM API: based on usage.
+- External search services (if used): based on plan.
+
+### 7. Risk Assessment
+*Risk Matrix*
+- Low YOLO accuracy (false positive/negative): High impact, medium probability.
+- Student network/camera disconnection: Medium impact, medium probability.
+- Exceeding API budget (LLM calls): Medium impact, low probability.
+- Switching from MongoDB to MySQL causing schema changes & complex queries: Medium-high impact, medium probability.
+
+*Mitigation Strategies*
+- YOLO: Adjust confidence threshold (min 0.5), only alert after multiple consecutive frames, allow teachers to manually review violations.
+- Network: Client-side detection with ONNX Runtime Web (fallback), log violations locally and sync when back online.
+- API Costs: Rate limiting (SlowAPI), set budget alerts, use lighter models for simple tasks.
+- Database: Design repository layer to abstract DB, normalize schema, prepare data migration scripts if switching to MySQL.
+
+*Contingency Plans*
+- Switch to manual proctoring (teachers viewing live camera) if AI detection fails.
+- Use SQLite/local storage as fallback if MongoDB Atlas is unavailable.
+- Docker image allows quick deployment on any cloud provider (no AWS lock-in).
+
+### 8. Expected Outcomes
+*Technical Improvements*: Automating the exam monitoring process with AI (YOLO) replacing manual proctoring. Automatic multiple-choice grading, recording violations with photographic evidence on S3. Multi-agent AI chatbot supporting student learning 24/7.
+*Long-term Value*: The platform can be scaled to multiple schools, support multi-language (next-intl), integrate more exam types (essays with AI grading), and develop into a complete educational SaaS. Accumulated violation data can be used to improve the detection model over time.
+c---
 title: "Proposal"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
+<!--
 {{% notice warning %}}
 ⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
 {{% /notice %}}
+-->
 
-In this section, you need to summarize the contents of the workshop that you **plan** to conduct.
+In this section, you need to summarize the contents of the workshop that you **plan** to conduct. -->
 
-# IoT Weather Platform for Lab Research
-## A Unified AWS Serverless Solution for Real-Time Weather Monitoring
+# EduTrust — AI-Powered Online Exam Monitoring Platform
+## AWS-Integrated Fullstack Solution for Exam Proctoring and Smart Learning Support
 
 ### 1. Executive Summary
-The IoT Weather Platform is designed for the ITea Lab team in Ho Chi Minh City to enhance weather data collection and analysis. It supports up to 5 weather stations, with potential scalability to 10-15, utilizing Raspberry Pi edge devices with ESP32 sensors to transmit data via MQTT. The platform leverages AWS Serverless services to deliver real-time monitoring, predictive analytics, and cost efficiency, with access restricted to 5 lab members via Amazon Cognito.
+EduTrust is an online exam management platform designed for educational environments (schools, training centers) to digitize the exam organization process, proctor exams using AI, and support learning through a smart chatbot. The system serves 3 main user groups: **Admins** (schools), **Teachers** (creating exams, proctoring), and **Students** (taking exams, viewing results). The backend uses FastAPI (Python) combined with MongoDB, Redis, Amazon S3, and the YOLO model for cheating detection via camera. The frontend is built with Next.js and Tailwind CSS, deployed on AWS Amplify.
 
 ### 2. Problem Statement
-### Current Problems
-Online exams face multiple challenges: manual proctoring is labor‑intensive, cheating is difficult to detect (phones, multiple faces in frame, leaving the camera), there is no centralized system to manage classes — exams — results, and students lack intelligent learning support tools.
+*Current Problems*
+Organizing online exams in schools faces many challenges: manual proctoring is labor-intensive, cheating is difficult to detect (using phones, multiple people in frame, leaving the camera), there is no centralized system to manage classes — exams — results, and there is a lack of smart learning support tools for students.
 
-### The Solution
+*The Solution*
 EduTrust provides a comprehensive platform including:
-- **Class & Exam Management**: Admin creates classes, assigns homeroom/subject teachers; teachers create multiple‑choice exams with secret keys and start/end times.
-- **AI Proctoring**: Integrates YOLOv26n to detect violations in real time (MULTIPLE_FACES, FACE_DISAPPEARED, FORBIDDEN_OBJECT). Evidence images are stored in Amazon S3 and logged in MongoDB.
-- **AI Learning Assistant**: Multi‑agent system (Pydantic AI) helps students search knowledge, ask questions, and find learning materials.
-- **Authentication & Security**: JWT (via Cognito) with role‑based access control (RBAC).
+- **Class & Exam Management**: Admins create classes, assign homeroom and subject teachers; teachers create multiple-choice exams with secret keys and set start/end times.
+- **AI Proctoring**: Integrates YOLOv26n (object detection) to detect violations via webcam in real-time — including detecting multiple faces (MULTIPLE_FACES), leaving the camera (FACE_DISAPPEARED: cell Phone), and forbidden objects (FORBIDDEN_OBJECT). Violation images are uploaded to Amazon S3 and logged in MongoDB.
+- **AI Learning Assistant Chatbot**: A multi-agent system using Pydantic AI with specialized agents (technical, social, general, web search) helps students look up knowledge, ask questions, and search for documents.
+- **Authentication & Security**: JWT tokens (using Cognito) for Role-Based Access Control (RBAC).
 
-### Benefits and ROI
-The solution reduces teachers’ manual workload, improves transparency and fairness, and automates grading with evidence stored in S3. Operational cost stays low by leveraging MongoDB Atlas (free tier), Redis Cloud, and AWS S3/Amplify. Estimated AWS cost is under 5 USD/month for a mid‑size school.
+*Benefits and Return on Investment (ROI)*
+The solution helps reduce the manual proctoring workload for teachers, improving transparency and fairness in exams. The system automatically grades, records violations with photographic evidence, and provides a dashboard summarizing results. Operating costs are low due to leveraging MongoDB Atlas (free tier), Redis Cloud, and AWS S3/Amplify. Estimated AWS infrastructure cost is under $5/month for a medium-sized school.
 
 ### 3. Solution Architecture
-EduTrust applies a **fullstack monorepo** architecture with a Python FastAPI backend and a Next.js frontend, deployed via Docker. Data is stored in MongoDB (users, exams, classes, submissions, violations), session/conversation cache uses Redis, and violation images are stored in Amazon S3. The architecture is shown below:
+The platform applies a **Fullstack monorepo** architecture with a Python (FastAPI) backend and a Next.js frontend, deployed via Docker containers. Data is stored on MongoDB (collections: users, exams, classes, submissions, violations), conversation sessions are cached on Redis, and violation images are on Amazon S3.
 
-![EduTrust Solution Architecture](/images/2-Proposal/edutrust-architect.png)
+![EduTrust Solution Architecture](FCAJ-Final.webp)
 
-### Services & Technology (Aligned with Architecture)
-- **AWS Amplify + CloudFront**: Hosts the Next.js frontend and delivers content via CDN.
-- **Amazon Route 53 + AWS ACM**: DNS and TLS/HTTPS certificate management.
-- **AWS WAF**: Web application firewall protection.
-- **Amazon VPC (public/private subnets)**: Network isolation and segmentation.
-- **Application Load Balancer (ALB)**: Distributes traffic to backend services.
-- **Amazon EC2 Auto Scaling**: Scales backend compute based on load.
-- **Amazon ECR**: Container registry for backend images.
-- **Amazon S3**: Stores violation images, ALB logs, and Terraform state.
-- **Amazon DynamoDB**: Key-value data store (as shown in the architecture).
-- **Amazon ElastiCache for Redis**: Cache/session layer for fast access.
-- **Amazon Cognito**: Authentication and user management.
-- **Amazon CloudWatch + VPC Flow Logs + SNS**: Monitoring, logs, and alerting.
-- **AWS KMS + SSM Parameter Store + PrivateLink**: Secrets and secure internal access.
-- **Terraform + GitHub Actions**: Infrastructure as Code and CI/CD automation.
+*Services & Technology Used (by architecture)*
+- *AWS Amplify + CloudFront*: Next.js frontend hosting and content delivery via CDN.
+- *AWS Route 53 + AWS ACM*: DNS and TLS/HTTPS certificate management.
+- *AWS WAF*: Web layer protection against common attack patterns.
+- *Amazon VPC (public/private subnets)*: Network isolation, separating public/private tiers.
+- *Application Load Balancer (ALB)*: Coordinating requests to the backend.
+- *Amazon EC2 Auto Scaling*: Operating the backend according to load with auto-scaling capabilities.
+- *Amazon ECR*: Storing Docker images for the backend.
+- *Amazon S3*: Storing violation images, ALB logs, and Terraform state.
+- *Amazon DynamoDB*: Fast key-value data storage (based on architecture diagram).
+- *Amazon ElastiCache for Redis*: Caching sessions/conversations and fast-access data.
+- *Amazon Cognito*: User authentication, role-based authorization.
+- *Amazon CloudWatch + VPC Flow Logs + SNS*: Monitoring, logging, and alerting.
+- *AWS KMS + SSM Parameter Store + PrivateLink*: Securing secrets and internal access.
+- *Terraform + GitHub Actions*: IaC and CI/CD for automated deployment.
 
-### Application Stack
-- **FastAPI**: Async backend API framework with automatic docs.
-- **Next.js + Tailwind CSS**: Frontend app with modern UI.
-- **YOLOv26n (Ultralytics)**: AI object detection for proctoring.
-- **Pydantic AI + LiteLLM**: Multi-agent orchestration for the chatbot.
-- **Docker**: Containerization with multi-stage builds.
+*Applied Technologies*
+- *FastAPI*: Backend API framework — async, auto-generated docs (Swagger/ReDoc).
+- *Next.js 16 + Tailwind CSS v4*: Frontend SPA with App Router, server/client components.
+- *YOLOv26n (Ultralytics)*: Object detection model for exam proctoring.
+- *Pydantic AI + LiteLLM*: Multi-agent orchestrator for the learning support chatbot.
+- *Docker*: Containerizing the backend with multi-stage build (Ubuntu 24.04).
 
-### Component Design
-- **Authentication (Auth)**: JWT access/refresh tokens, session via cookies, RBAC (admin/teacher/student).
-- **Class Management**: Assign homeroom/subject teachers, add/remove students, auto update status (active/inactive).
-- **Exam Management**: Create MCQ exams, auto generate secret keys, control start/end time, auto grading on submit.
-- **Camera Proctoring (Detection)**: CameraService receives frames, YOLO detects violations, ViolationLogger writes MongoDB + S3, ScreenshotUtils captures evidence.
-- **AI Agent**: UnifiedAgent orchestrates sub‑agents (technical, social, general, web_search) with tool delegation and WebSocket streaming.
+*Component Design*
+- *Authentication (Auth)*: JWT access/refresh tokens, session management via cookies, RBAC authorization (admin/teacher/student).
+- *Class Management*: Assigning homeroom/subject teachers, adding/removing students, automatically updating status (active/inactive).
+- *Exam Management*: Creating multiple-choice exams, automatic secret codes, time control (start/end time), automatic grading upon submission.
+- *Camera Monitoring (Detection)*: CameraService receives frames from clients, ObjectDetector (YOLO) detects violations, ViolationLogger logs to MongoDB + S3, ScreenshotUtils captures evidence photos.
+- *AI Agent*: UnifiedAgent orchestrates sub-agents (technical, social, general, web_search) via tool delegation, streaming responses via WebSocket.
 
 ### 4. Technical Implementation
-**Implementation Phases**
-This project has two parts—setting up weather edge stations and building the weather platform—each following 4 phases:
-- Build Theory and Draw Architecture: Research Raspberry Pi setup with ESP32 sensors and design the AWS serverless architecture (1 month pre-internship)
-- Calculate Price and Check Practicality: Use AWS Pricing Calculator to estimate costs and adjust if needed (Month 1).
-- Fix Architecture for Cost or Solution Fit: Tweak the design (e.g., optimize Lambda with Next.js) to stay cost-effective and usable (Month 2).
-- Develop, Test, and Deploy: Code the Raspberry Pi setup, AWS services with CDK/SDK, and Next.js app, then test and release to production (Months 2-3).
+*Implementation Phases*
+The project is divided into 5 main phases:
+1. *Learning foundational AWS services*: Familiarizing with services in the architecture (VPC, EC2/ALB/ASG, S3, ECR, Cognito, CloudWatch, KMS, SSM, WAF) and the CI/CD/IaC process.
+2. *Research and architecture design*: Researching technologies (FastAPI, Next.js, YOLO, Pydantic AI), designing database schema, API contracts, and system architecture.
+3. *Developing core features*: Building the auth system (Cognito JWT), class CRUD, exam management, automatic grading.
+4. *Integrating AI & Camera*: Integrating YOLO for violation detection, building the multi-agent chatbot system, connecting S3/Redis.
+5. *Frontend & testing*: Completing the Next.js dashboard for the 3 roles, end-to-end testing, and Dockerization.
 
-**Technical Requirements**
-- Weather Edge Station: Sensors (temperature, humidity, rainfall, wind speed), a microcontroller (ESP32), and a Raspberry Pi as the edge device. Raspberry Pi runs Raspbian, handles Docker for filtering, and sends 1 MB/day per station via MQTT over Wi-Fi.
-- Weather Platform: Practical knowledge of AWS Amplify (hosting Next.js), Lambda (minimal use due to Next.js), AWS Glue (ETL), S3 (two buckets), IoT Core (gateway and rules), and Cognito (5 users). Use AWS CDK/SDK to code interactions (e.g., IoT Core rules to S3). Next.js reduces Lambda workload for the fullstack web app.
+*Technical Requirements*
+- *Backend*: Python ≥ 3.11, FastAPI, Motor (async MongoDB driver), Redis ≥ 5.0, Boto3 (AWS SDK), Ultralytics (YOLO), Pydantic AI + LiteLLM, Kreuzberg (document parsing), SlowAPI (rate limiting).
+- *Frontend*: Next.js 16, React 19, Tailwind CSS v4, Lucide React (icons), React Markdown + KaTeX (math rendering), ONNX Runtime Web, next-intl (i18n).
+- *Infrastructure*: Docker (multi-stage build), MongoDB Atlas, Redis Cloud, Amazon S3, AWS Amplify, Logfire (observability).
 
 ### 5. Timeline & Milestones
-**Project Timeline**
-- Pre-Internship (Month 0): 1 month for planning and old station review.
-- Internship (Months 1-3): 3 months.
-    - Month 1: Study AWS and upgrade hardware.
-    - Month 2: Design and adjust architecture.
-    - Month 3: Implement, test, and launch.
-- Post-Launch: Up to 1 year for research.
+- *Weeks 1–2*: Learning AWS services based on the architecture (VPC, EC2/ALB/ASG, S3, ECR, Cognito, CloudWatch, KMS/SSM, WAF) and the CI/CD/IaC process.
+- *Weeks 3–4*: Researching technologies, designing architecture and database schema.
+- *Weeks 5–6*: Developing backend core (auth, classes, exams, submissions).
+- *Weeks 7–8*: Integrating YOLO detection, AI chatbot (multi-agent), S3 storage.
+- *Week 9*: Developing frontend dashboard (admin/teacher/student views).
+- *Week 10*: Integration testing, performance optimization, and Dockerization.
 
 ### 6. Budget Estimation
-You can find the budget estimation on the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01).  
-Or you can download the [Budget Estimation File](../attachments/budget_estimation.pdf).
 
-### Infrastructure Costs
-- AWS Services:
-    - AWS Lambda: $0.00/month (1,000 requests, 512 MB storage).
-    - S3 Standard: $0.15/month (6 GB, 2,100 requests, 1 GB scanned).
-    - Data Transfer: $0.02/month (1 GB inbound, 1 GB outbound).
-    - AWS Amplify: $0.35/month (256 MB, 500 ms requests).
-    - Amazon API Gateway: $0.01/month (2,000 requests).
-    - AWS Glue ETL Jobs: $0.02/month (2 DPUs).
-    - AWS Glue Crawlers: $0.07/month (1 crawler).
-    - MQTT (IoT Core): $0.08/month (5 devices, 45,000 messages).
+*Architectural Assumptions*
+- Small environment (staging/small production), low–medium traffic.
+- Backend running on EC2 Auto Scaling (t3.small, 2 instances), ALB operating 24/7.
+- Frontend hosted on Amplify + CloudFront, using WAF.
+- Violation data stored on S3 (~10–20 GB/month).
 
-Total: $0.7/month, $8.40/12 months
+*Infrastructure Costs (monthly – estimated)*
 
-- Hardware: $265 one-time (Raspberry Pi 5 and sensors).
+| Service | TP ($) | Forcasting 1 month ($) |
+| :--- | :--- | :--- |
+| VPC | 0.00 | 0.00 |
+| EC2-Other | 1.57 | 47.10 |
+| EC2-Instances | 1.27 | 38.10 |
+| Elastic Load Balancing | 0.61 | 18.30 |
+| Amplify | 0.62 | 18.60 |
+| WAF | 0.53 | 15.90 |
+| ElastiCache | 0 - 1.15 | 9 - 14 |
+| KMS | - | 2.00 |
+| Route 53 | 0.51 | |
+| ECR | - | 0.3 (3GB) |
+| S3 | - | 0.03 (1GB) |
+| DynamoDB | 0.00 | 0.00 |
+| Cognito | 0.00 | 0.00 |
+| SNS | 0.00 | 0.00 |
+
+*Third-party API Costs*
+- OpenAI/LiteLLM API: based on usage.
+- External search services (if used): based on plan.
 
 ### 7. Risk Assessment
-#### Risk Matrix
-- Network Outages: Medium impact, medium probability.
-- Sensor Failures: High impact, low probability.
-- Cost Overruns: Medium impact, low probability.
+*Risk Matrix*
+- Low YOLO accuracy (false positive/negative): High impact, medium probability.
+- Student network/camera disconnection: Medium impact, medium probability.
+- Exceeding API budget (LLM calls): Medium impact, low probability.
+- Switching from MongoDB to MySQL causing schema changes & complex queries: Medium-high impact, medium probability.
 
-#### Mitigation Strategies
-- Network: Local storage on Raspberry Pi with Docker.
-- Sensors: Regular checks and spares.
-- Cost: AWS budget alerts and optimization.
+*Mitigation Strategies*
+- YOLO: Adjust confidence threshold (min 0.5), only alert after multiple consecutive frames, allow teachers to manually review violations.
+- Network: Client-side detection with ONNX Runtime Web (fallback), log violations locally and sync when back online.
+- API Costs: Rate limiting (SlowAPI), set budget alerts, use lighter models for simple tasks.
+- Database: Design repository layer to abstract DB, normalize schema, prepare data migration scripts if switching to MySQL.
 
-#### Contingency Plans
-- Revert to manual methods if AWS fails.
-- Use CloudFormation for cost-related rollbacks.
+*Contingency Plans*
+- Switch to manual proctoring (teachers viewing live camera) if AI detection fails.
+- Use SQLite/local storage as fallback if MongoDB Atlas is unavailable.
+- Docker image allows quick deployment on any cloud provider (no AWS lock-in).
 
 ### 8. Expected Outcomes
-#### Technical Improvements: 
-Real-time data and analytics replace manual processes.  
-Scalable to 10-15 stations.
-#### Long-term Value
-1-year data foundation for AI research.  
-Reusable for future projects.
+*Technical Improvements*: Automating the exam monitoring process with AI (YOLO) replacing manual proctoring. Automatic multiple-choice grading, recording violations with photographic evidence on S3. Multi-agent AI chatbot supporting student learning 24/7.
+*Long-term Value*: The platform can be scaled to multiple schools, support multi-language (next-intl), integrate more exam types (essays with AI grading), and develop into a complete educational SaaS. Accumulated violation data can be used to improve the detection model over time.
