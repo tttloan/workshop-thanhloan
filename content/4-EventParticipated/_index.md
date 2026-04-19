@@ -38,3 +38,12 @@ During my internship, I participated in two events. Each one was a memorable exp
 &emsp;**Location:** FPTU - Hall Academic A  
 
 &emsp;**Role:** Attendee  
+
+
+
+### [Event 4](4.4-Event4/)
+&emsp;**Event Name:** AWS First Cloud AI Journey Community Day 2026
+
+&emsp;**Date & Time:** 09:00 – 12:00, March 21, 2026
+
+&emsp;**Location:** 26th Floor, Bitexco Financial Tower - 02 Hai Trieu Street, Ben Nghe Ward, District 1, Ho Chi Minh City
